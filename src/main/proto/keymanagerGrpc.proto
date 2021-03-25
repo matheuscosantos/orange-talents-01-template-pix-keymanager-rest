@@ -1,13 +1,10 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "br.com.mcos";
 option java_outer_classname = "KeymanagerGrpc";
-option objc_class_prefix = "HLW";
 
-package br.com.mcos;
+package br.com.zup.edu.grpc;
 import "google/protobuf/timestamp.proto";
-
 
 service KeymanagerRegistraGrpcService {
 
@@ -17,13 +14,19 @@ service KeymanagerRegistraGrpcService {
 
 service KeymanagerRemoveGrpcService {
 
-  rpc remove(RemoveChavePixRequest) returns (RemoveChavePixResponse){}
+  rpc remove(RemoveChavePixRequest) returns (RemoveChavePixResponse) {}
 
 }
 
 service KeymanagerCarregaGrpcService {
 
   rpc carrega(CarregaChavePixRequest) returns (CarregaChavePixResponse) {}
+
+}
+
+service KeymanagerListaGrpcService {
+
+  rpc lista(ListaChavesPixRequest) returns (ListaChavesPixResponse) {}
 
 }
 
@@ -41,7 +44,9 @@ enum TipoDeConta {
   CONTA_POUPANCA     = 2;
 }
 
-
+/**
+ * Registra chave
+ */
 message RegistraChavePixRequest {
   string clienteId        = 1;
   TipoDeChave tipoDeChave = 2;
@@ -54,24 +59,28 @@ message RegistraChavePixResponse {
   string pixId     = 2;
 }
 
+/**
+ * Remove chave
+ */
 message RemoveChavePixRequest {
   string clienteId = 1;
-  string pixId = 2;
+  string pixId     = 2;
 }
 
 message RemoveChavePixResponse {
   string clienteId = 1;
-  string pixId = 2;
+  string pixId     = 2;
 }
 
+/**
+ * Carrega chave
+ */
 message CarregaChavePixRequest {
   message FiltroPorPixId {
     string clienteId = 1;
     string pixId     = 2;
   }
 
-  //  O filtro pode ter dois tipos de filtros, o primeiro é utilizando o clienteId e pix id
-  //  ou somente a chave pix
   oneof filtro {
     FiltroPorPixId pixId  = 1;
     string chave          = 2;
@@ -100,4 +109,25 @@ message CarregaChavePixResponse {
   string clienteId = 1;
   string pixId     = 2;
   ChavePix chave   = 3;
+}
+
+/**
+ * Lista chaves
+ */
+message ListaChavesPixRequest {
+  string clienteId = 1;
+}
+
+message ListaChavesPixResponse {
+
+  message ChavePix {
+    string pixId            = 1;
+    TipoDeChave tipo        = 2;
+    string chave            = 3;
+    TipoDeConta tipoDeConta = 4;
+    google.protobuf.Timestamp criadaEm = 5;
+  }
+
+  string clienteId         = 1;
+  repeated ChavePix chaves = 2;
 }

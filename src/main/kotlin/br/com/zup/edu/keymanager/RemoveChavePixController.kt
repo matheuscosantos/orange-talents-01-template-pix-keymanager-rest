@@ -1,7 +1,7 @@
-package br.com.mcos.keymanager
+package br.com.zup.edu.keymanager
 
-import br.com.mcos.KeymanagerRemoveGrpcServiceGrpc
-import br.com.mcos.RemoveChavePixRequest
+import br.com.zup.edu.grpc.KeymanagerRemoveGrpcServiceGrpc
+import br.com.zup.edu.grpc.RemoveChavePixRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Delete
@@ -14,10 +14,12 @@ class RemoveChavePixController(private val removeChavePixClient: KeymanagerRemov
     private val LOGGER = LoggerFactory.getLogger(this::class.java)
 
     @Delete("/pix/{pixId}")
-    fun delete(clienteId: UUID, pixId: UUID): HttpResponse<Any> {
+    fun delete(
+        clienteId: UUID,
+        pixId: UUID
+    ): HttpResponse<Any> {
 
         LOGGER.info("[$clienteId] removendo uma chave pix com $pixId")
-
         removeChavePixClient.remove(
             RemoveChavePixRequest.newBuilder()
                 .setClienteId(clienteId.toString())
@@ -25,9 +27,8 @@ class RemoveChavePixController(private val removeChavePixClient: KeymanagerRemov
                 .build()
         )
 
-        LOGGER.info("[$clienteId] removeu uma chave pix com $pixId")
-
         return HttpResponse.ok()
     }
 
 }
+

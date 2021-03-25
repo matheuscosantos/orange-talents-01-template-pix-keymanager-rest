@@ -1,4 +1,4 @@
-package br.com.mcos.keymanager.shared
+package br.com.zup.edu.keymanager.shared
 
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
@@ -21,22 +21,16 @@ class GlobalExceptionHandler : ExceptionHandler<StatusRuntimeException, HttpResp
         val statusDescription = exception.status.description ?: ""
         val (httpStatus, message) = when (statusCode) {
             Status.NOT_FOUND.code -> Pair(HttpStatus.NOT_FOUND, statusDescription)
-            Status.INVALID_ARGUMENT.code -> Pair(
-                HttpStatus.BAD_REQUEST,
-                "Dados da requisição estão inválidos"
-            ) // TODO: melhoria: extrair detalhes do erro
+            Status.INVALID_ARGUMENT.code -> Pair(HttpStatus.BAD_REQUEST, "Dados da requisição estão inválidos") // TODO: melhoria: extrair detalhes do erro
             Status.ALREADY_EXISTS.code -> Pair(HttpStatus.UNPROCESSABLE_ENTITY, statusDescription)
-            else -> {
+            else ->  {
                 LOGGER.error("Erro inesperado '${exception.javaClass.name}' ao processar requisição", exception)
-                Pair(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Nao foi possivel completar a requisição devido ao erro: ${statusDescription} (${statusCode})"
-                )
+                Pair(HttpStatus.INTERNAL_SERVER_ERROR, "Nao foi possivel completar a requisição devido ao erro: ${statusDescription} (${statusCode})")
             }
         }
 
         return HttpResponse
-            .status<JsonError>(httpStatus)
-            .body(JsonError(message))
+                .status<JsonError>(httpStatus)
+                .body(JsonError(message))
     }
 }

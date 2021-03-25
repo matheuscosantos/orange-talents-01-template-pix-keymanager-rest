@@ -1,6 +1,6 @@
-package br.com.mcos.keymanager.shared.validations
+package br.com.zup.edu.keymanager.shared.validations
 
-import br.com.mcos.keymanager.NovaChavePixRequest
+import br.com.zup.edu.keymanager.NovaChavePixRequest
 import io.micronaut.core.annotation.AnnotationValue
 import io.micronaut.validation.validator.constraints.ConstraintValidator
 import io.micronaut.validation.validator.constraints.ConstraintValidatorContext
@@ -8,8 +8,10 @@ import javax.inject.Singleton
 import javax.validation.Constraint
 import javax.validation.Payload
 import kotlin.annotation.AnnotationRetention.RUNTIME
-import kotlin.annotation.AnnotationTarget.*
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.TYPE
 import kotlin.reflect.KClass
+
 
 @MustBeDocumented
 @Target(CLASS, TYPE)
